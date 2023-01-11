@@ -4,6 +4,8 @@
 
 Some of the topics we cover include:
 
+test
+
 -   Ruby
 -   Ruby on Rails
 -   SQL
