@@ -1,29 +1,18 @@
 class CoursesController < ApplicationController
   def show
-    @course = course
-    @sections = course.sections.includes(:lessons)
+    @path = Path.find(params[:path_id])
+    @course = @path.courses.friendly.find(params[:id])
+    @sections = @course.sections.includes(:lessons)
 
-    if current_user.present?
-      set_lesson_completion_status
-    end
+    mark_completed_lessons
   end
 
   private
 
-  def course
-    path.courses.friendly.find(params[:id])
-  end
+  def mark_completed_lessons
+    return if current_user.nil?
 
-  def path
-    Path.find(params[:path_id])
-  end
-
-  def set_lesson_completion_status
-    lesson_completions = current_user.lesson_completions.where(course_id: @course.id).ids
-
-    @sections.map(&:lessons).flatten.each do |lesson|
-      p lesson
-      lesson.completed = lesson_completions.include?(lesson.id)
-    end
+    lessons = @sections.flat_map(&:lessons)
+    current_user.mark_completed_lessons(lessons)
   end
 end

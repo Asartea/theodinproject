@@ -21,12 +21,13 @@ export default class ProgressController extends Controller {
   }
 
   connect() {
+    console.log("IN THE PROGRESS CONTROLLER", this.urlValue);
     this.fetchProgress();
   }
 
   fetchProgress() {
     this.loadingValue = true;
-
+    console.log("IN THE PROGRESS CONTROLLER", this.urlValue);
     axios.get(this.urlValue).then((response) => {
       const { percentage } = response.data;
 

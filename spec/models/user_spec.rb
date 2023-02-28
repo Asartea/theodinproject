@@ -189,4 +189,29 @@ RSpec.describe User do
       expect(user.on_path?(path)).to be(false)
     end
   end
+
+  describe '#mark_completed_lessons' do
+    context 'when lesson is included in users lesson completions' do
+      it 'marks the lesson as completed' do
+        lesson = create(:lesson)
+        create(:lesson_completion, lesson:, user:)
+
+        user.mark_completed_lessons([lesson])
+
+        expect(lesson.completed?).to be(true)
+      end
+    end
+  end
+
+  context 'when lesson is included in users lesson completions' do
+    it 'marks the lesson as not completed' do
+      lesson = create(:lesson)
+      other_lesson = create(:lesson)
+      create(:lesson_completion, lesson: other_lesson, user:)
+
+      user.mark_completed_lessons([lesson, other_lesson])
+
+      expect(lesson.completed?).to be(false)
+    end
+  end
 end

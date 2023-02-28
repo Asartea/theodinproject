@@ -5,6 +5,7 @@ import { Notyf } from 'notyf';
 import axios from '../src/js/axiosWithCsrf';
 
 axios.defaults.headers.common['Content-Type'] = 'application/json';
+axios.defaults.headers.common['Accept'] = 'application/json';
 
 export default class CompleteButton extends Controller {
   static targets = ['text'];
@@ -29,8 +30,9 @@ export default class CompleteButton extends Controller {
 
     axios({
       method: requestMethod,
-      url: `/lessons/${id}/lesson_completions`,
+      url: `/lessons/${id}/completion`,
       data: decamelizeKeys(params),
+      format: 'json',
     }).then(() => {
       this.onSuccess();
     }).catch(() => {
@@ -65,6 +67,7 @@ export default class CompleteButton extends Controller {
   }
 
   emitUpdateProgressEvent() {
+    console.log('emitUpdateProgressEvent')
     const event = new CustomEvent('update-progress', { bubbles: true });
     window.dispatchEvent(event);
   }

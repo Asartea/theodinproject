@@ -58,6 +58,14 @@ class User < ApplicationRecord
     self.path == path
   end
 
+  def mark_completed_lessons(lessons)
+    completed_lesson_ids = lesson_completions.where(lesson: lessons).pluck(:lesson_id)
+
+    lessons.each do |lesson|
+      lesson.completed = completed_lesson_ids.include?(lesson.id)
+    end
+  end
+
   private
 
   def last_lesson_completed

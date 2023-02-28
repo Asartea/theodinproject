@@ -25,6 +25,7 @@ RSpec.describe 'Course Progress Badge' do
       visit lesson_path(first_lesson)
 
       find(:test_id, 'complete-button').click
+      pause
       visit path_course_path(path, course)
 
       within find(:test_id, 'progress-badge') do
