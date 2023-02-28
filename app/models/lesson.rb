@@ -18,6 +18,12 @@ class Lesson < ApplicationRecord
 
   delegate :body, to: :content
 
+  attr_accessor :completed
+
+  def completed?
+    completed
+  end
+
   def position_in_section
     section_lessons.where('position <= ?', position).count
   end

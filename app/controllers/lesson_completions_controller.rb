@@ -10,7 +10,7 @@ class LessonCompletionsController < ApplicationController
       path_id: lesson.course.path.id,
     )
 
-    if lesson_completion.save
+    if lesson_completion.save!
       render json: lesson_completion, status: :created
     else
       render json: { errors: lesson_completion.errors.full_messages }, status: :unprocessable_entity
@@ -19,7 +19,7 @@ class LessonCompletionsController < ApplicationController
   # rubocop: enable Metrics/AbcSize, Metrics/MethodLength
 
   def destroy
-    lesson_completion = current_user.lesson_completions.find_by(lesson_id: lesson.id)
+    lesson_completion = current_user.lesson_completions.find_by!(lesson_id: lesson.id)
 
     if lesson_completion.present?
       lesson_completion.destroy
