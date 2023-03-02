@@ -98,6 +98,26 @@ RSpec.describe Lesson do
     end
   end
 
+  describe '#completed' do
+    it 'return false by default' do
+      expect(lesson.completed).to be(false)
+    end
+
+    context 'when the lesson has been completed' do
+      it 'returns true' do
+        lesson.completed = true
+        expect(lesson).to be_completed
+      end
+    end
+
+    context 'when the lesson has been not been completed' do
+      it 'returns false' do
+        lesson.completed = false
+        expect(lesson).not_to be_completed
+      end
+    end
+  end
+
   describe '#position_in_section' do
     let(:section) { create(:section) }
     let(:first_lesson) { create(:lesson, position: 1, section:) }
