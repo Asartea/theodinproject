@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "complete_button" do %>
+  <%= render Complete::ButtonComponent.new(lesson: @lesson, current_user: current_user) %>
+<% end %>

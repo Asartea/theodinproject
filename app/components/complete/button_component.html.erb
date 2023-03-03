@@ -1,23 +1,13 @@
+<%= tag.turbo_frame_tag id: "complete_button", data: { turbo: true } do %>
 
-<button
-  data-controller="complete-button"
-  data-complete-button-is-completed-value="<%= lesson_completed? %>"
-  data-complete-button-is-loading-value="false"
-  data-action="click->complete-button#toggle"
-  data-complete-button-id-param="<%= lesson.id %>"
-  data-complete-button-loading-class="complete-button--loading"
-  data-complete-button-completed-class="complete-button--completed"
-  data-test-id="complete-button"
-  class="button button--primary complete-button md:w-60 w-full">
-  <span class="complete-button__loading-icon">
-    <%= inline_svg_tag 'icons/spinner.svg', class: 'animate-spin h-6', aria: true, title: 'loading', desc: 'loading spinner' %>
-  </span>
-
-  <span class="complete-button__content">
-    <span class="complete-button__completed-icon">
-      <%= inline_svg_tag 'icons/checkmark-circle-solid.svg', class: 'h-6', aria: true, title: 'check', desc: 'checkmark icon' %>
-    </span>
-
-    <span class="complete-button__text font-medium" data-complete-button-target="text"><%= text %></span>
-  </span>
-</button>
+  <% if lesson_completed? %>
+    <%= link_to lesson_completion_path(lesson.id), data: { turbo_method: :delete }, class: "button button--primary h-full complete-button md:w-60 w-full" do %>
+      <%= inline_svg_tag 'icons/checkmark-circle-solid.svg', class: 'h-6 pr-2', aria: true, title: 'check', desc: 'checkmark icon' %>
+      Lesson Completed
+    <% end %>
+  <% else %>
+    <%= link_to lesson_completion_path(lesson.id), data: { turbo_method: :post }, class: "button button--primary md:w-60 w-full h-full" do %>
+      Mark Complete
+    <% end %>
+  <% end %>
+<% end %>
