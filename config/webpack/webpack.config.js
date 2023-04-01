@@ -6,14 +6,19 @@ const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');;
 // See the shakacode/shakapacker README and docs directory for advice on customizing your webpackConfig.
 const customConfig = {
   resolve: {
-    extensions: ['.js', '.jsx', '.scss', '.css'],
+    extensions: ['.js', '.jsx', '.mjs', '.scss', '.css'],
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
+        include: /node_modules/,
         use: ['babel-loader'],
+      },
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: 'javascript/auto',
       },
       {
         test: /\.s[ac]ss$/i,

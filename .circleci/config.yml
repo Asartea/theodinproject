@@ -12,7 +12,6 @@ executors:
           RAILS_ENV: test
           POSTGRES_USERNAME: postgres
           POSTGRES_PASSWORD: password
-          NODE_ENV: test
       - image: cimg/redis:6.2.6
       - image: cimg/postgres:14.2
         environment:
@@ -47,29 +46,6 @@ commands:
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: bundle exec rake db:schema:load
 
-  compile-assets:
-    description: Precompiles and caches the webpacker assets
-    steps:
-      - run:
-          name: Set up assets cache key
-          command: find app/javascript -type f -exec md5sum {} \; > dependency_checksum
-      - restore_cache:
-          name: Restore assets cache
-          keys:
-            - assets-cache-v1-{{ arch }}-{{ .Branch }}-{{ checksum "dependency_checksum" }}
-            - assets-cache-v1-{{ arch }}-{{ .Branch }}
-            - assets-cache-v1-{{ arch }}
-            - assets-cache-v1
-      - run:
-          name: Precompile assets
-          command: RAILS_ENV=test bundle exec rails webpacker:compile
-      - save_cache:
-          name: Save assets cache
-          paths:
-            - public/packs-test
-            - tmp/webpacker
-          key: assets-cache-v1-{{ arch }}-{{ .Branch }}-{{ checksum "dependency_checksum" }}
-
 jobs:
   tests:
     executor: rails-executor
@@ -83,7 +59,6 @@ jobs:
             chromedriver --version
           name: Check install
       - build-app
-      - compile-assets
       - run: yarn test
       - run: bundle exec rspec
   linters:
