@@ -50,7 +50,7 @@ commands:
 jobs:
   tests:
     executor: rails-executor
-    parallelism: 2
+    parallelism: 4
     steps:
       - checkout
       - browser-tools/install-chrome
